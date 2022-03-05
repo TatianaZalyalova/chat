@@ -1,0 +1,31 @@
+#chat {
+  max-height: 400px;
+  overflow-y: scroll;
+  max-width: 700px;
+  overflow-x: hidden;
+}
+
+* {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+ul {
+  padding: 40px;
+  margin: 0;
+  list-style: none;
+}
+
+h4 {
+  font-size: 14px;
+}
+
+.error {
+  color: red;
+  display: none;
+}
+
+.error.visible {
+  display: block;
+}
+
