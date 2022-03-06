@@ -29,15 +29,14 @@ describe("payloadMessages", () => {
       () =>
         Promise.resolve({
           ok: true,
-          json: () =>
-            Promise.resolve({
-              messages,
-            }),
+          json: () => Promise.resolve(messages),
         }) as Promise<Response>
     );
 
     const store = createStore(reducer, state);
-    const messagesArr = await payloadMessages(store);
-    sleep(500).then(() => expect(messagesArr).toEqual(messages));
+    await payloadMessages(store);
+    await sleep(500).then(() =>
+      expect(store.getState().messages).toEqual(messages)
+    );
   });
 });
