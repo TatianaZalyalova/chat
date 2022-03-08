@@ -5,10 +5,7 @@ const config = {
   firebaseCollection: "messages.json",
 };
 
-// /**
-//  * @return {Object[]} messagesList
-//  */
-export async function getMessagesList(): Promise<Message[] | { date: Date }[]> {
+export async function getMessagesList(): Promise<void | Message[]> {
   return fetch(`${config.firebaseBaseUrl}/${config.firebaseCollection}`, {
     headers: {
       Accept: "application/json",
@@ -19,17 +16,11 @@ export async function getMessagesList(): Promise<Message[] | { date: Date }[]> {
     .then((data) =>
       Object.values(data).map((el) => ({
         ...(el as Message),
-        date: new Date((el as Message).date),
       }))
-    );
+    )
+    .catch(() => console.log("error, not response"));
 }
 
-// /**
-//  * @param {Object} data
-//  * @param {string} data.nickname
-//  * @param {string} data.message
-//  * @returns {boolean}
-//  */
 export async function sendMessage(data: Message): Promise<boolean> {
   return fetch(`${config.firebaseBaseUrl}/${config.firebaseCollection}`, {
     method: "POST",
@@ -42,4 +33,16 @@ export async function sendMessage(data: Message): Promise<boolean> {
       "Content-Type": "application/json",
     },
   }).then((response) => response.json());
+}
+
+export function observeWithEventSource(
+  cb: (data: { name: string; message: string }) => void
+): void {
+  const evtSource: any = new EventSource(
+    `${config.firebaseBaseUrl}/${config.firebaseCollection}`
+  );
+  function handler(ev: MessageEvent) {
+    return cb(JSON.parse(ev.data).data);
+  }
+  evtSource.addEventListener("put", handler);
 }

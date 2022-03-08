@@ -4,7 +4,7 @@ import { reducer } from "./redux/reducer";
 import "./css/style.css";
 
 import { render } from "./render/render";
-import { sendMessage } from "./firebase/messagesApi";
+import { sendMessage, observeWithEventSource } from "./firebase/messagesApi";
 import { State, Message } from "./types";
 import { payloadMessages } from "./firebase/payloadMessages";
 import { reEscape, emoji, sleep } from "./utils/utils";
@@ -24,7 +24,9 @@ store.subscribe(() => {
   render(store.getState());
 });
 
-payloadMessages(store);
+observeWithEventSource(async () => {
+  await payloadMessages(store);
+});
 
 formSendMessage.addEventListener("submit", async function (ev): Promise<void> {
   ev.preventDefault();
