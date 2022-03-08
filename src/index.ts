@@ -28,7 +28,7 @@ observeWithEventSource(async () => {
   await payloadMessages(store);
 });
 
-formSendMessage.addEventListener("submit", async function (ev): Promise<void> {
+formSendMessage.addEventListener("submit", async (ev): Promise<void> => {
   ev.preventDefault();
   const nameUser: string = nameInput.value;
   const messageUser: string = messageInput.value;
@@ -50,7 +50,7 @@ formSendMessage.addEventListener("submit", async function (ev): Promise<void> {
   }
 });
 
-messageInput.addEventListener("keyup", function () {
+messageInput.addEventListener("keyup", () => {
   let text: string = messageInput.value;
 
   $.each(emoji, (plaintext, unicode) => {
