@@ -9,6 +9,6 @@ export interface Message {
 
 export interface Action {
   type: string;
-  message: string;
-  messages: Message[];
+  message?: string;
+  messages?: Message[];
 }
